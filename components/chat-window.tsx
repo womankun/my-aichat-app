@@ -6,10 +6,10 @@ import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
 import { Send, Square } from "lucide-react"
 import { ChatMessage as Bubble } from "./chat-message"
-import { useChatNonStream } from "@/hooks/use-chat-nonstream"
+import { useChat } from "@/hooks/use-chat"
 
 export function ChatWindow() {
-  const { messages, input, setInput, handleSubmit, isLoading, stop } = useChatNonStream({
+  const { messages, input, setInput, handleSubmit, isLoading, stop } = useChat({
     api: "/api/chat",
   })
 
