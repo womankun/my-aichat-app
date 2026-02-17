@@ -18,7 +18,6 @@ export function ChatWindow() {
   useEffect(() => {
     if (messages.length === 0) return;
 
-    // エリアが分かれているので、素直に「一番下（end）」までスクロールすればOK
     messagesEndRef.current?.scrollIntoView({
       behavior: "smooth",
       block: "end",
@@ -26,10 +25,11 @@ export function ChatWindow() {
   }, [messages, isLoading]);
 
   return (
-    // 画面全体を flex-col で縦に分割
     <div className="flex h-screen w-full flex-col bg-background overflow-hidden">
-      {/* 1. チャット欄エリア: ここだけがスクロールする */}
-      <div ref={scrollContainerRef} className="flex-1 overflow-y-auto w-full">
+      <div
+        ref={scrollContainerRef}
+        className="flex-1 overflow-y-auto w-full custom-scrollbar"
+      >
         <div className="max-w-3xl mx-auto flex flex-col gap-4 px-4 pt-8 pb-10">
           {messages.map((m) => (
             <Bubble key={m.id} role={m.role} content={m.content} />

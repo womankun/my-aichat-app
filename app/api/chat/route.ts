@@ -2,9 +2,10 @@ import { NextRequest } from "next/server";
 
 export const runtime = "nodejs";
 
-const BASE_URL = process.env.OPENROUTER_BASE_URL || "https://openrouter.ai/api/v1";
-const API_KEY  = process.env.OPENROUTER_API_KEY!;
-const PRIMARY  = process.env.OPENROUTER_MODEL || "z-ai/glm-4.5-air:free";
+const BASE_URL =
+  process.env.OPENROUTER_BASE_URL || "https://openrouter.ai/api/v1";
+const API_KEY = process.env.OPENROUTER_API_KEY!;
+const PRIMARY = process.env.OPENROUTER_MODEL || "z-ai/glm-4.5-air:free";
 const APP_URL = process.env.APP_URL || "http://localhost:3000";
 
 const FALLBACKS = [
@@ -16,8 +17,12 @@ export async function POST(req: NextRequest) {
   const { messages } = await req.json();
 
   const withSystem = [
-    { role: "system", content: "あなたは日本語で丁寧に答えるアシスタントです。" },
-    ...messages
+    {
+      role: "system",
+      content:
+        "あなたは日本語で丁寧に答えるアシスタントです。関西弁でしゃべってください。",
+    },
+    ...messages,
   ];
 
   const models = [PRIMARY, ...FALLBACKS];
@@ -27,7 +32,7 @@ export async function POST(req: NextRequest) {
       const res = await fetch(`${BASE_URL}/chat/completions`, {
         method: "POST",
         headers: {
-          "Authorization": `Bearer ${API_KEY}`,
+          Authorization: `Bearer ${API_KEY}`,
           "Content-Type": "application/json",
           "HTTP-Referer": APP_URL,
           "X-Title": "Next Chat Sample",
@@ -45,7 +50,7 @@ export async function POST(req: NextRequest) {
 
       const encoder = new TextEncoder();
       const decoder = new TextDecoder();
-      
+
       const stream = new ReadableStream({
         async start(controller) {
           const reader = res.body?.getReader();
@@ -81,7 +86,6 @@ export async function POST(req: NextRequest) {
       });
 
       return new Response(stream);
-
     } catch (e) {
       console.error(`Model ${model} failed, trying next...`, e);
       continue;
@@ -90,6 +94,6 @@ export async function POST(req: NextRequest) {
 
   return new Response(
     JSON.stringify({ error: "利用可能なモデルがありません。" }),
-    { status: 503 }
+    { status: 503 },
   );
 }
