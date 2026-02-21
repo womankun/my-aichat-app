@@ -1,4 +1,4 @@
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import clsx from "clsx";
 import type { ChatRole } from "@/types/chat";
 import Markdown from "./markdown";
@@ -17,12 +17,26 @@ export function ChatMessage({
     <div
       className={clsx(
         "flex w-full gap-3",
+        "animate-in fade-in slide-in-from-bottom-3 duration-500 ease-out fill-mode-forwards",
         isUser ? "justify-end" : "justify-start",
       )}
     >
       {!isUser && (
-        <Avatar className="h-8 w-8">
-          <AvatarFallback>{isAssistant ? "AI" : "SYS"}</AvatarFallback>
+        <Avatar className="h-6 w-6 shrink-0">
+          {isAssistant ? (
+            <>
+              <AvatarImage
+                src="/ai-icon.png"
+                alt="AI Icon"
+                className="object-cover"
+              />
+              <AvatarFallback className="bg-gradient-to-br from-blue-400 to-purple-400 text-white">
+                AI
+              </AvatarFallback>
+            </>
+          ) : (
+            <AvatarFallback>SYS</AvatarFallback>
+          )}
         </Avatar>
       )}
 

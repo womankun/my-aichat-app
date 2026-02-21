@@ -28,20 +28,28 @@ export function ChatWindow() {
     <div className="flex h-screen w-full flex-col bg-background overflow-hidden">
       <div
         ref={scrollContainerRef}
-        className="flex-1 overflow-y-auto w-full custom-scrollbar"
+        className="flex-1 overflow-y-auto w-full custom-scrollbar flex flex-col"
       >
-        <div className="max-w-3xl mx-auto flex flex-col gap-4 px-4 pt-8 pb-10">
-          {messages.map((m) => (
-            <Bubble key={m.id} role={m.role} content={m.content} />
-          ))}
+        {messages.length === 0 && !isLoading ? (
+          <div className="flex-1 flex items-center justify-center">
+            <h1 className="text-2xl md:text-4xl font-medium text-muted-foreground animate-in fade-in duration-700">
+              何かお困りですか？
+            </h1>
+          </div>
+        ) : (
+          <div className="max-w-3xl mx-auto flex flex-col gap-4 px-4 pt-8 pb-10 w-full">
+            {messages.map((m) => (
+              <Bubble key={m.id} role={m.role} content={m.content} />
+            ))}
 
-          {isLoading && (
-            <div className="text-xs text-muted-foreground animate-pulse ml-2">
-              AIが入力中…
-            </div>
-          )}
-          <div ref={messagesEndRef} />
-        </div>
+            {isLoading && (
+              <div className="text-xs text-muted-foreground animate-pulse ml-2">
+                AIが入力中…
+              </div>
+            )}
+            <div ref={messagesEndRef} />
+          </div>
+        )}
       </div>
 
       <div className="w-full bg-background border-t relative">

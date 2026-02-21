@@ -20,7 +20,7 @@ export async function POST(req: NextRequest) {
     {
       role: "system",
       content:
-        "あなたは日本語で丁寧に答えるアシスタントです。関西弁でしゃべってください。",
+        "あなたは日本語で丁寧に答えるアシスタントです。絵文字を積極的に使ってください。",
     },
     ...messages,
   ];
